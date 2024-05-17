@@ -202,3 +202,7 @@ public class SastreInstitutoJohnson {
   }
 }
 ```
+
+### Diagrama de Clases
+
+![diagrama](./que-me-pongo-2.png)
