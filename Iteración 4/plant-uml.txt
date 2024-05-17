@@ -1,0 +1,60 @@
+@startuml
+class Usuario {
+  List<Uniforme> generarSugerencia()
+}
+
+class Guardarropa {
+  SugeridorPrenda sugeridor
+  List<Uniforme> generarSugerencia()
+  List<Uniforme> combinarPrendas(List<Prenda>)
+}
+
+interface SugeridorPrenda {
+  List<Uniforme> sugerir(Usuario)
+}
+
+class SugeridorPrendasClima {
+  List<Uniforme> sugerir(Usuario)
+  Double getClima()
+}
+
+class SugeridorPrendasEdad {
+  List<Uniforme> sugerir(Usuario)
+}
+
+abstract class Prenda {
+ boolean esSugeridaParaUsuario(Usuario)
+ boolean esParteCuerpo(ParteCuerpo)
+ boolean aptaParaTemperatura(Double)
+}
+
+interface AccuWeatherAPI {
+  getWeather(String ciudad)
+}
+
+interface ObtenedorClima {
+  Double getTemperatura()
+}
+
+class ObtenedorClimaAccuWeather {
+  Map<String, DataCiudad> climasCiudades
+  Double getTemperatura()
+  Optional<DataCiudad> getDataValidaCiudad(String ciudad)
+}
+
+class DataCiudad {
+   Double temperatura;
+   LocalDateTime horaConsulta;
+   boolean estaEnRangoHorario(int duracionData)
+}
+
+Usuario --> Guardarropa
+Guardarropa ..> SugeridorPrenda
+SugeridorPrendasClima ..|> SugeridorPrenda
+SugeridorPrendasEdad ..|> SugeridorPrenda
+Guardarropa ..> Prenda
+ObtenedorClimaAccuWeather ..> AccuWeatherAPI
+ObtenedorClimaAccuWeather ..|> ObtenedorClima
+SugeridorPrendasClima ..> ObtenedorClima
+ObtenedorClimaAccuWeather --> DataCiudad
+@enduml
