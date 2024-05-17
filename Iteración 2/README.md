@@ -68,6 +68,32 @@ public class BorradorPrenda {
 }
 ```
 
+Para cumplir con la parte de *"para evitar elegir materiales inconsistentes con el tipo de prenda."* podemos crear para el TipoPrenda elegida, un mensaje que nos avise cuando el Material seleccionado no es consistente con el TipoPrenda. Para esto, cada TipoPrenda va a tener un listado de Material y ese chequeo se puede hacer en el setter de material
+```java
+BorradorPrenda setMaterial(Material material) {
+  if (!this.getTipoPrenda().esMaterialValido(material)) {
+    throw new MaterialInvalidoException("El material: " + material + "es inconsistente con el tipo de prenda: " + this.getTipoPrenda());
+  };
+  this.material = material;
+  return this;
+}
+
+public enum TipoPrenda {
+  CAMISA(Categoria.PARTE_SUPERIOR, new List<Material>({Material.LINO, Material.ALGODON })),
+  REMERA(Categoria.PARTE_SUPERIOR, new List<Material>({ Material.ALGODON, Material.TELA})),
+  // etc.
+
+  public TipoPrenda(Categoria categoria, List<Material> materialesValidos) {
+    this.categoria = categoria;
+    this.materialesValidos = new ArrayList(materialesValidos);
+  }
+
+  public boolean esMaterialValido(Material materialAValidar) {
+    return this.getMaterialesValidos().stream().anyMatch((material) -> material.equals(materialAValidar));
+  }
+}
+```
+
 Además podríamos anidar los setters devolviendo *this*.
 
 ```java
