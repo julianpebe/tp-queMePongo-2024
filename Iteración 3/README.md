@@ -106,7 +106,7 @@ public class Guardarropas {
 }
 
 interface SugeridorPrendas {
-    List<Uniforme> sugerir(Usuario usuario);
+    List<Prenda> sugerir(Usuario usuario);
 }
 
 class SugeridorPrendasSegunUsuario implements SugeridorPrendas {
