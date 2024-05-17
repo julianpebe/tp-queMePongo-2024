@@ -80,6 +80,7 @@ intentoDeZapatilla.setMaterial(...).setTrama(...).setColorPrimario(...)
 solamente si esta es válida.*
 
 Esto lo podemos solucionar con un método en el BorradorPrenda, que se ocupe de instanciar la prenda cuando sea necesario.
+El método `validarPrenda()` va a incluir la validación sobre los objetos obligatorios, alguna consistencia de materiales (que no específica el enunciado), u cualquiera que surja
 ```java
 public class BorradorPrenda {
     //...anterior
@@ -91,5 +92,87 @@ public class BorradorPrenda {
             this.getColorPrincipal(),
             this.getColorSecundario());
     }
+}
+```
+
+
+### Bonus track
+
+> *Como usuario QueMePongo, quiero que un uniforme siempre conste de una prenda superior, una inferior y un calzado*
+
+Podemos modelar una clase Uniforme con su constructor y las validaciones necesarias para la misma
+```java
+public class Uniforme {
+  Prenda parteSuperior;
+  Prenda parteInferior;
+  Prenda calzado;
+
+  public Uniforme(Prenda parteSuperior, Prenda parteInferior, Prenda calzado) {
+    this.parteSuperior = Objects.requireNonNull(parteSuperior, "La parte superior de un uniforme es obligatoria");
+    this.parteInferior = Objects.requireNonNull(parteInferior, "La parte inferior de un uniforme es obligatoria");
+    this.calzado = Objects.requireNonNull(calzado, "El calzado de un uniforme es obligatorio");
+  }
+}
+```
+
+> *Como usuario QueMePongo, quiero poder recibir sugerencias de uniformes armados.*
+
+>*Como administrador de QueMePongo, quiero poder configurar diferentes uniformes para distintas instituciones (Ej: para el colegio San Juan debe ser una chomba verde de piqué, un pantalón de acetato gris y zapatillas blancas, mientras que para el Instituto Johnson siempre será una camisa blanca, pantalón de vestir negro y zapatos negros)*
+
+Para este requerimiento, podemos usar una clase abstracta Sastre, que tenga definido solo el comportamiento de la creación del Uniforme. Las definiciones de los métodos abstractos, serán realizadas por las clases que hereden de la clase usando `@Override`
+```java
+abstract class Sastre {
+	public Uniforme fabricarUniforme() {
+		return new Uniforme(this.fabricarParteSuperior(), this.fabricarParteInferior() , this.fabricarCalzado());
+	}	
+	abstract Prenda fabricarParteSuperior();
+	abstract Prenda fabricarParteInferior();
+	abstract Prenda fabricarCalzado();
+}
+
+public class SastreColegioSanJuan extends Sastre {
+  @Override
+  Prenda fabricarParteSuperior() {
+    Borrador borrador = new Borrador(TipoPrenda.CHOMBA);
+    borrador.setColorPrimario(Color.VERDE).setMaterial(Material.PIQUE);
+    return borrador.crearPrenda();
+  }
+
+  @Override
+  Prenda fabricarParteInferior() {
+    Borrador borrador = new Borrador(TipoPrenda.PANTALON);
+    borrador.setColorPrimario(Color.GRIS).setMaterial(Material.ACETATO);
+    return borrador.crearPrenda();
+  }
+
+  @Override
+  Prenda fabricarCalzado() {
+    Borrador borrador = new Borrador(TipoPrenda.ZAPATILLA);
+    borrador.setColorPrimario(Color.BLANCO).setMaterial(Material.TELA);
+    return borrador.crearPrenda();
+  }
+}
+
+public class SastreInstitutoJohnson {
+    @Override
+  Prenda fabricarParteSuperior() {
+    Borrador borrador = new Borrador(TipoPrenda.CAMISA);
+    borrador.setColorPrimario(Color.BLANCO).setMaterial(Material.ALGODON);
+    return borrador.crearPrenda();
+  }
+
+  @Override
+  Prenda fabricarParteInferior() {
+    Borrador borrador = new Borrador(TipoPrenda.PANTALON);
+    borrador.setColorPrimario(Color.NEGRO).setMaterial(Material.DE_VESTIR);
+    return borrador.crearPrenda();
+  }
+
+  @Override
+  Prenda fabricarCalzado() {
+    Borrador borrador = new Borrador(TipoPrenda.ZAPATO);
+    borrador.setColorPrimario(Color.NEGRO).setMaterial(Material.CUERO);
+    return borrador.crearPrenda();
+  }
 }
 ```
