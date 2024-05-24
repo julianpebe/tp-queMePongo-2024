@@ -1,0 +1,57 @@
+@startuml
+class Usuario {
+    List<Guardarropa> guardarropas;
+    List<GuardarropaCompartido> guardarropasCompartidos;
+    List<PropuestaCambioGuardarropa> propuestasGuardarropas;
+    void compartir(Guardarropa guardarropa, Usuario usuario)
+    void agregarGuardarropaCompartido(GuardarropaCompartido guardarropaCompartido
+    void agregarPropuesta(PropuestaCambioGuardarropa propuesta)
+    void aceptarPropuesta(PropuestaCambioGuardarropa propuesta)
+    void rechazarPropuesta(PropuestaCambioGuardarropa propuesta)
+}
+
+class Guardarropa {
+    String criterioSeparacion;
+    List<Prenda> prendas;
+    agregarPrenda(Prenda prenda)
+    quitarPrenda(Prenda prenda)
+}
+
+class GuardarropaCompartido {
+    Guardarropa guardarropa;
+    Usuario compartidoConUsuario;
+}
+
+abstract class PropuestaCambioGuardarropa {
+  EstadoPropuestaCambio estadoPropuesta;
+  Prenda prenda;
+  Guardarropa guardarropa;
+  void aceptar()
+  void rechazar()
+  setEstado(EstadoPropuestaCambio estado)
+  void ejecutar();
+}
+
+enum EstadoPropuestaCambio {
+    ACEPTADA,
+    RECHAZADA
+}
+
+class PropuestaAgregarPrenda extends PropuestaCambioGuardarropa {
+  ejecutar()
+}
+
+class PropuestaQuitarPrenda extends PropuestaCambioGuardarropa {
+  ejecutar()
+}
+
+Usuario --> Guardarropa
+Usuario --> GuardarropaCompartido
+Usuario --> PropuestaCambioGuardarropa
+PropuestaCambioGuardarropa -> EstadoPropuestaCambio
+Guardarropa --> Prenda
+PropuestaCambioGuardarropa --> Prenda
+PropuestaCambioGuardarropa --> Guardarropa
+GuardarropaCompartido --> Guardarropa
+
+@enduml
