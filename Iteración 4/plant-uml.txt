@@ -1,25 +1,25 @@
 @startuml
 class Usuario {
-  List<Uniforme> generarSugerencia()
+  List<Atuendo> generarSugerencia()
 }
 
 class Guardarropa {
   SugeridorPrenda sugeridor
-  List<Uniforme> generarSugerencia()
-  List<Uniforme> combinarPrendas(List<Prenda>)
+  List<Atuendo> generarSugerencia()
+  List<Atuendo> combinarPrendas(List<Prenda>)
 }
 
 interface SugeridorPrenda {
-  List<Uniforme> sugerir(Usuario)
+  List<Atuendo> sugerir(Usuario)
 }
 
 class SugeridorPrendasClima {
-  List<Uniforme> sugerir(Usuario)
+  List<Atuendo> sugerir(Usuario)
   Double getClima()
 }
 
 class SugeridorPrendasEdad {
-  List<Uniforme> sugerir(Usuario)
+  List<Atuendo> sugerir(Usuario)
 }
 
 abstract class Prenda {

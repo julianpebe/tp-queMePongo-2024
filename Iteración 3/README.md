@@ -16,7 +16,7 @@ ___
 Esto lo hice con el método del Guardarropa `generarSugerencia(Usuario)`, que adentro se ocupa de:
 - Delegarle a un SugeridorPrenda la sugerencia según todas las prendas, es decir: filtrar las prendas según algúna lógica que indique el sugeridor concreto. La razón por la que delegué la generacion de sugerencias de prendas a un Sugeridor, es porque se puede cambiar la implementación concreta del sugeridor, pero siempre tiene que tener el mismo comportamiento. Esto se puede lograr haciendo injección de dependencias. En este caso la clase concreta es `SugeridorPrendasSegunUsuario` y cada clase concreta de la (ahora) clase abstracta Prenda va a tener el método `esSugeridaParaUsuario` que va a determinar la respuesta para este sugeridor.
 
-- Una vez que tenemos todas las prendas filtradas, `combinarPrendas(List<Prenda> prendas)` para poder tener un Uniforme, que es lo mismo que 'Sugerencia', una clase que tiene una `ParteCuerpo.TORSO`, una `ParteCuerpo.PIERNA` y una `ParteCuerpo.PIE` (atributo nuevo de Prenda de tipo enum). La razón por la que delegué este comportamiento al Guardarropa es porque el enunciado específica que esa combinación de prendas no va a cambiar.
+- Una vez que tenemos todas las prendas filtradas, `combinarPrendas(List<Prenda> prendas)` para poder tener un Atuendo, que es lo mismo que 'Sugerencia', una clase que tiene una `ParteCuerpo.TORSO`, una `ParteCuerpo.PIERNA` y una `ParteCuerpo.PIE` (atributo nuevo de Prenda de tipo enum). La razón por la que delegué este comportamiento al Guardarropa es porque el enunciado específica que esa combinación de prendas no va a cambiar.
 
 ___
 
@@ -32,7 +32,7 @@ ___
 public class Usuario {
     private Guardarropas guardarropas;
 
-    List<Uniforme> generarSugerencia() {
+    List<Atuendo> generarSugerencia() {
         return this.guardarropas.generarSugerencias(this);
     };
 
@@ -53,16 +53,16 @@ public class Guardarropas {
         this.sugeridor = sugeridor;
     }
 
-    List<Uniforme> generarSugerencia(Usuario usuario) {
+    List<Atuendo> generarSugerencia(Usuario usuario) {
         List<Prenda> prendas = this.sugeridor.sugerir(usuario);
 
-        List<Uniforme> sugerencias = this.combinarPrendas(prendas);
+        List<Atuendo> sugerencias = this.combinarPrendas(prendas);
 
         return sugerencias;
     }
 
-    List<Uniforme> combinarPrendas(List<Prenda> prendas) {
-        List<Uniforme> = new ArrayList();
+    List<Atuendo> combinarPrendas(List<Prenda> prendas) {
+        List<Atuendo> = new ArrayList();
 
         while (prendas.size() > 0) {
             Prenda torso = this.getTorso(prendas);
@@ -70,7 +70,7 @@ public class Guardarropas {
             Prenda pies = this.getPies(prendas);
             prendas.remove(Arrays.asList(torso, piernas, pies));
 
-            Uniforme sugerencia = new Uniforme(torso, piernas, pies);
+            Atuendo sugerencia = new Atuendo(torso, piernas, pies);
             sugerencias.push(sugerencia);
         }
     }
